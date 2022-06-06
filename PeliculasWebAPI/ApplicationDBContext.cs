@@ -13,6 +13,18 @@ namespace PeliculasWebAPI {
 
         }
 
+        public ApplicationDBContext() {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            if (!optionsBuilder.IsConfigured) {
+                optionsBuilder.UseSqlServer("name-DefaultConnection", opc => {
+                    opc.UseNetTopologySuite();
+                })
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }   
+        }
+
         /* Sirve para configurar una propiedad manual y no por defecto */
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
             configurationBuilder.Properties<DateTime>()

@@ -339,16 +339,16 @@ namespace PeliculasWebAPI.Migrations
                             Id = 2,
                             CineId = 4,
                             DescuentoPorcentaje = 15m,
-                            FechaFin = new DateTime(2022, 6, 6, 0, 0, 0, 0, DateTimeKind.Local),
-                            FechaInicio = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Local)
+                            FechaFin = new DateTime(2022, 6, 11, 0, 0, 0, 0, DateTimeKind.Local),
+                            FechaInicio = new DateTime(2022, 6, 6, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 1,
                             CineId = 1,
                             DescuentoPorcentaje = 10m,
-                            FechaFin = new DateTime(2022, 6, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            FechaInicio = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Local)
+                            FechaFin = new DateTime(2022, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            FechaInicio = new DateTime(2022, 6, 6, 0, 0, 0, 0, DateTimeKind.Local)
                         });
                 });
 
@@ -573,7 +573,7 @@ namespace PeliculasWebAPI.Migrations
                         {
                             Id = 5,
                             Cartelera = true,
-                            FechaEstreno = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            FechaEstreno = new DateTime(2022, 6, 6, 0, 0, 0, 0, DateTimeKind.Local),
                             PosterURL = "https://upload.wikimedia.org/wikipedia/en/5/50/The_Matrix_Resurrections.jpg",
                             Titulo = "The Matrix Resurrections"
                         });
