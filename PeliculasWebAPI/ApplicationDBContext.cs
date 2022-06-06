@@ -16,6 +16,30 @@ namespace PeliculasWebAPI {
         public ApplicationDBContext() {
         }
 
+        /* Itera todas las entidades que van estar salvadas */
+        private void ProcesarSalvado() {
+            foreach (var item in ChangeTracker.Entries()
+                                             .Where(e => e.State == EntityState.Added
+                                                && e.Entity is EntidadAuditable)) { 
+                var entidad = item.Entity as EntidadAuditable;
+                entidad.UsuarioCreacion     = "Fernando";
+                entidad.UsuarioModificacion = "Fernando";
+            }
+
+            foreach (var item in ChangeTracker.Entries()
+                                             .Where(e => e.State == EntityState.Modified
+                                                && e.Entity is EntidadAuditable)) { 
+                var entidad = item.Entity as EntidadAuditable;
+                entidad.UsuarioModificacion = "Fernando 2";
+                item.Property(nameof(entidad.UsuarioCreacion)).IsModified = false;
+            }
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default) {
+            ProcesarSalvado();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             if (!optionsBuilder.IsConfigured) {
                 optionsBuilder.UseSqlServer("name-DefaultConnection", opc => {

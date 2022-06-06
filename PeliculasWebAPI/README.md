@@ -14,6 +14,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 1. __OnConfiguring.__
 2. __Cambiando status de una entidad.__
 3. __Actualizando algunas propiedades.__
+4. __Sobreescribiendo SaveChanges.__
 
 #### OnConfiguring
 
@@ -63,3 +64,35 @@ Inicialmente nuestra base de datos se encontraba con el registro que queriamos c
 Al actualizar solo su campo _Nombre_, tenemos el resultado siguiente, donde solo se actualiza la propiedad mencionada, mientras que los demás campos del _id: 6_ se quedan como estaban.
 
 ![actores2](/PeliculasWebAPI/images/actores2.PNG)
+
+#### Sobreescribiendo SaveChanges
+
+Podemos sobreescribir el método `SaveChanges` para poder realizar cambios de una manera centralizada. 
+
+Creamos una clase abstracta `EntidadAuditable.cs` que va herederar nuestras entidades.
+
+![entidadAuditable](/PeliculasWebAPI/images/EntidadAuditable.png)
+
+El cual nuestra entidad `Genero.cs` va heredar
+
+![EntidadGenero](/PeliculasWebAPI/images/GeneroHeredaEntidadAuditable.png)
+
+En nuestro `ApplicactionDBContext.cs` creamos un método que va hacer el proceso de agrega y modificar las propiedades que tienen nuestro `EntidadAuditable.cs`.
+
+![DbContext](/PeliculasWebAPI/images/SavaChangesDbContext.png)
+
+Al probar creando un nuevo genero, tenemos un status `200`.
+
+![nuevoGenero](/PeliculasWebAPI/images/generosavachenges.PNG)
+
+Al verificar nuestra Base de Datos, vemos que se agregó el registro pero con las columnas de nuestra clase `EntidadAuditable.cs`
+
+![generos1](/PeliculasWebAPI/images/genero1.PNG)
+
+Al actualiza el mismo registro, tenemos un status `200`.
+
+![actualizarGenero](/PeliculasWebAPI/images/genero%20put.PNG)
+
+Al verificar el registro en nuestra Base de Datos, vemos que la columna `UsuarioModificacion` fue lo que se actualizó además de la columna `Nombre`.
+
+![generos2](/PeliculasWebAPI/images/genero2.PNG)

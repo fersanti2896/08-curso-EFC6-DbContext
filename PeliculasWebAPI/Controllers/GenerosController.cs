@@ -167,5 +167,13 @@ namespace PeliculasWebAPI.Controllers {
 
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Genero genero) {
+            context.Update(genero);
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
