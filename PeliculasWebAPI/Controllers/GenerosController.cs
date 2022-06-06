@@ -80,9 +80,10 @@ namespace PeliculasWebAPI.Controllers {
             if (existeGeNom) {
                 return BadRequest("Ya existe un Genero con ese nombre: " + genero.Nombre);
             }
-            
+
             /* Guarda el status */
-            context.Add(genero);
+            //context.Add(genero);
+            context.Entry(genero).State = EntityState.Added;
 
             /* Agrega el estado genero a la tabla Generos */
             await context.SaveChangesAsync();

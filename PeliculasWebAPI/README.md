@@ -24,3 +24,18 @@ De esta forma si ya existe una configuracion del DbContext en nuestro `Program.c
 
 #### Cambiando el status de una entidad
 
+Si bien podemos hacer cambios con _Create_, _Update_ y _Delete_ a una entidad, también podemos darle otra configuración de _Entry_ para cambiar su status. 
+
+Por ejemplo, desde `GenerosController.cs` en el método `POST` cuando creamos un nuevo género, envés de usar:
+
+    context.Add(genero);
+
+El cual actualiza su status, podemos implementar:
+
+    context.Entry(genero).State = EntityState.Added;
+
+![entry-state](/PeliculasWebAPI/images/EntryState.png)
+
+Al hacer el agregado, tenemos un status `200` el cual si agrego el nuevo género. 
+
+![entry-state-ejecucion](/PeliculasWebAPI/images/EntryState%20desde%20Swagger.PNG)
