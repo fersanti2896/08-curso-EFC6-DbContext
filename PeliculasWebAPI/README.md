@@ -13,6 +13,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 
 1. __OnConfiguring.__
 2. __Cambiando status de una entidad.__
+3. __Actualizando algunas propiedades.__
 
 #### OnConfiguring
 
@@ -39,3 +40,26 @@ El cual actualiza su status, podemos implementar:
 Al hacer el agregado, tenemos un status `200` el cual si agrego el nuevo género. 
 
 ![entry-state-ejecucion](/PeliculasWebAPI/images/EntryState%20desde%20Swagger.PNG)
+
+#### Actualizando algunas propiedades
+
+Si queremos actualizar todas las columnas de una tabla, podemos hacer que solo se actualizan las columnas que queremos como modificadas. 
+
+En `ActoresController.cs` si solo queremos actualizar el campo nombre pero los demás campos dejarlos como están, podemos hacer el código: 
+
+    context.Entry(actor).Property(a => a.Nombre)
+                                .IsModified = true;
+
+![actoresController](/PeliculasWebAPI/images/actoresController.png)
+
+Si modificamos el actor con _id: 6_, dandole el nombre _Tom Hanks_
+
+![actorput](/PeliculasWebAPI/images/actoresput.PNG)
+
+Inicialmente nuestra base de datos se encontraba con el registro que queriamos cambiar. 
+
+![actores](/PeliculasWebAPI/images/actores1.PNG)
+
+Al actualizar solo su campo _Nombre_, tenemos el resultado siguiente, donde solo se actualiza la propiedad mencionada, mientras que los demás campos del _id: 6_ se quedan como estaban.
+
+![actores2](/PeliculasWebAPI/images/actores2.PNG)

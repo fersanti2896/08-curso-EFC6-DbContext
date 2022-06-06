@@ -74,7 +74,9 @@ namespace PeliculasWebAPI.Controllers {
             actor.Id = id;
 
             /* Se actualiza todas las propiedades del objeto actor */
-            context.Update(actor);
+            //context.Update(actor);
+            context.Entry(actor).Property(a => a.Nombre)
+                                .IsModified = true;
             await context.SaveChangesAsync();
 
             return Ok();
