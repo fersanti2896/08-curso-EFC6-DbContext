@@ -15,6 +15,8 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 2. __Cambiando status de una entidad.__
 3. __Actualizando algunas propiedades.__
 4. __Sobreescribiendo SaveChanges.__
+5. __Inyección de Dependencias en DbContext.__
+6. __Eventos Tracked y StateChanged.__
 
 #### OnConfiguring
 
@@ -96,3 +98,38 @@ Al actualiza el mismo registro, tenemos un status `200`.
 Al verificar el registro en nuestra Base de Datos, vemos que la columna `UsuarioModificacion` fue lo que se actualizó además de la columna `Nombre`.
 
 ![generos2](/PeliculasWebAPI/images/genero2.PNG)
+
+#### Inyección de Dependencias en DbContext
+
+Si queremos modificar nuestro código anterior envés de código duro al querer registrar el id de un usuario podemos crear un servicio que se inyecte en nuestro `ApplicationDBContext.cs`.
+
+Creamos nuestra interfaz `IUsuarioService.cs`.
+
+![interfazUsuario](/PeliculasWebAPI/images/IUsuarioService.png)
+
+Creamos nuestro servicio `UsuarioService.cs`.
+
+![usuarioService](/PeliculasWebAPI/images/UsuarioService.png)
+
+En nuestro `Program.cs` registramos la interfaz y el servicio. 
+
+![registroIS](/PeliculasWebAPI/images/Registro%20de%20interfaz%20y%20servicio.png)
+
+Y en nuestro `ApplicationDBContext.cs` inyectamos la dependencia del servicio. 
+
+![inyeccionService](/PeliculasWebAPI/images/inyectandoDependencia.png)
+
+Y al modificar nuestro método con la inyección de la dependecia. 
+
+![inyeccionService2](/PeliculasWebAPI/images/inyectandoDependencia%202.png)
+
+Y al probar al registrar un nuevo genero, tenemos un status `200`. 
+
+![nuevoGenero](/PeliculasWebAPI/images/generoPostIP.PNG)
+
+Al verificar en nuestra Base de Datos, vemos que tenemos el mismo resultado.
+
+![generosBD3](/PeliculasWebAPI/images/generos%20BD.PNG)
+
+#### Eventos Tracked y StateChanged
+

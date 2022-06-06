@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PeliculasWebAPI;
+using PeliculasWebAPI.Servicios;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(
                         //opciones.UseLazyLoadingProxies();
                     }
                  );
+
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 /* Agregando AutoMapper */
 builder.Services.AddAutoMapper(typeof(Program));

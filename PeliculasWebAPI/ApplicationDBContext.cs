@@ -3,14 +3,17 @@ using PeliculasWebAPI.Entidades;
 using PeliculasWebAPI.Entidades.Configuraciones;
 using PeliculasWebAPI.Entidades.Seeding;
 using PeliculasWebAPI.Entidades.SinLlaves;
+using PeliculasWebAPI.Servicios;
 using System.Reflection;
 
 namespace PeliculasWebAPI {
     public class ApplicationDBContext : DbContext {
-        
-        /* Al usar DbContextOptions podemos usar la inyección de dependencias */
-        public ApplicationDBContext(DbContextOptions options) : base(options) {
+        private readonly IUsuarioService usuarioService;
 
+        /* Al usar DbContextOptions podemos usar la inyección de dependencias */
+        public ApplicationDBContext(DbContextOptions options,
+            IUsuarioService usuarioService) : base(options) {
+            this.usuarioService = usuarioService;
         }
 
         public ApplicationDBContext() {
@@ -22,15 +25,15 @@ namespace PeliculasWebAPI {
                                              .Where(e => e.State == EntityState.Added
                                                 && e.Entity is EntidadAuditable)) { 
                 var entidad = item.Entity as EntidadAuditable;
-                entidad.UsuarioCreacion     = "Fernando";
-                entidad.UsuarioModificacion = "Fernando";
+                entidad.UsuarioCreacion     = usuarioService.ObtenerUsuarioId();
+                entidad.UsuarioModificacion = usuarioService.ObtenerUsuarioId();
             }
 
             foreach (var item in ChangeTracker.Entries()
                                              .Where(e => e.State == EntityState.Modified
                                                 && e.Entity is EntidadAuditable)) { 
                 var entidad = item.Entity as EntidadAuditable;
-                entidad.UsuarioModificacion = "Fernando 2";
+                entidad.UsuarioModificacion = usuarioService.ObtenerUsuarioId();
                 item.Property(nameof(entidad.UsuarioCreacion)).IsModified = false;
             }
         }
