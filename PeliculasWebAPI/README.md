@@ -21,6 +21,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 8. __Queries Arbitrarios.__
 9. __Sentencias Arbitrarias.__
 10. __ToSqlQuery - Centralizando Queries Arbitrarios.__
+11. __Procedimientos Almacenados.__
 
 #### OnConfiguring
 
@@ -251,3 +252,32 @@ Probando desde nuestro `endpoint` de Películas.
 
 ![resultadoQuerie](/PeliculasWebAPI/images/ToSqlQuery%20Resultado.PNG)
 
+#### Procedimientos Almacenados
+
+Para poder ejecutar Procedimiento Almacenado desde Entity Framework, debemos tener un PA en una migración. 
+
+Definimos nuestro procedimientos almacenados através de una migración, en donde vamos a consultar un genero por su _id_ e insertar un genero. 
+
+![ProcAlmMigracion](/PeliculasWebAPI/images/ProcAlm%20Migracion.png)
+
+En nuestro `GenerosController.cs` crearemos dos endpoints para nuestro procedimientos almacenados. 
+
+Para el `endpoint: api/generos/ProcAlm/{id}` de tipo `GET` definimos el método en nuestro controlador. 
+
+![procAlmGet](/PeliculasWebAPI/images/ProcAlm%20Get.png)
+
+Probando el `endpoint` nos devuelve un status `200`: 
+
+![procAlmResult](/PeliculasWebAPI/images/ProcAlm%20Result%201.PNG)
+
+Para el `endpoint: api/generos/ProcAlm` de tipo `POST` definimos el método en nuestro controlador. 
+
+![procAlmGet](/PeliculasWebAPI/images/ProcAlm%20Post.png)
+
+Probando el `endpoint` nos devuelve un status `200`: 
+
+![procAlmResult](/PeliculasWebAPI/images/ProcAlm%20Result%202.PNG)
+
+Visto en nuestra Base de Datos, notamos que se registró el Género con éxito. 
+
+![GenerosBDProcAlm](/PeliculasWebAPI/images/generos%20BD%20Proc%20Alm.PNG)

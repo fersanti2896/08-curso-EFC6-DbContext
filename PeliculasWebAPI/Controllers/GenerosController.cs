@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PeliculasWebAPI.Entidades;
 
@@ -189,6 +190,43 @@ namespace PeliculasWebAPI.Controllers {
             await context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet("ProcAlm/{id:int}")]
+        public async Task<ActionResult<Genero>> GetPA(int id) {
+            var generos = context.Generos
+                                 .FromSqlInterpolated($"EXEC Generos_ObtenerPorId { id }")
+                                 .IgnoreQueryFilters()
+                                 .AsAsyncEnumerable();
+
+            await foreach (var genero in generos) {
+                return genero;
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost("Proc_Alm")]
+        public async Task<ActionResult> PostPA(Genero genero) {
+            var existeGeNom = await context.Generos
+                                           .AnyAsync(g => g.Nombre == genero.Nombre);
+
+            if (existeGeNom){
+                return BadRequest("Ya existe un Genero con ese nombre: " + genero.Nombre);
+            }
+
+            var outputId = new SqlParameter();
+            outputId.ParameterName = "@id";
+            outputId.SqlDbType = System.Data.SqlDbType.Int;
+            outputId.Direction = System.Data.ParameterDirection.Output;
+
+            await context.Database
+                         .ExecuteSqlRawAsync("EXEC Generos_Insertar @Nombre = {0}, @Id = {1} OUTPUT",
+                                             genero.Nombre, outputId);
+
+            var id = (int)outputId.Value;
+
+            return Ok(id);
         }
     }
 }
