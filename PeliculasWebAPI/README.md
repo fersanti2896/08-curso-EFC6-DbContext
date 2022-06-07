@@ -19,6 +19,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 6. __Eventos Tracked y StateChanged.__
 7. __Eventos SaveChanges.__
 8. __Queries Arbitrarios.__
+9. __Sentencias Arbitrarias.__
 
 #### OnConfiguring
 
@@ -223,6 +224,16 @@ Si lo vemos desde la consola, notamos la implementación de SQL.
 
 ![QueriResultCmd2](/PeliculasWebAPI/images/QuerieArbitrarioResultado%20Consola%202.PNG)
 
+#### Sentencias Arbitrarias
 
+Si queremos insertar, actualizar o eliminar, podemos hacer uso de una sentencia arbitraria, por ejemplo, en nuestro `GenerosController.cs` se hace una sentencia SQL para crear un nuevo genero. 
 
+![nuevoGenero](/PeliculasWebAPI/images/NuevoGenero.png)
 
+Probamos desde el `endpoint` para crear un nuevo genero, el cual nos devuelve un status `200`. 
+
+![nuevoGeneroSwagger](/PeliculasWebAPI/images/NuevoGeneroSwagger.PNG)
+
+Verificando desde nuestra Base de Datos.
+
+![GeneroBD](/PeliculasWebAPI/images/NuevoGeneroBD.PNG)

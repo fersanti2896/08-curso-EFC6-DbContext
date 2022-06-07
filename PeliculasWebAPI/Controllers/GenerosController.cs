@@ -95,7 +95,10 @@ namespace PeliculasWebAPI.Controllers {
 
             /* Guarda el status */
             //context.Add(genero);
-            context.Entry(genero).State = EntityState.Added;
+            //context.Entry(genero).State = EntityState.Added;
+            await context.Database
+                         .ExecuteSqlInterpolatedAsync($@"INSERT INTO Generos(Nombre)
+                                                         VALUES({ genero.Nombre })");
 
             /* Agrega el estado genero a la tabla Generos */
             await context.SaveChangesAsync();
