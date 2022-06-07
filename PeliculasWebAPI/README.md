@@ -20,6 +20,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 7. __Eventos SaveChanges.__
 8. __Queries Arbitrarios.__
 9. __Sentencias Arbitrarias.__
+10. __ToSqlQuery - Centralizando Queries Arbitrarios.__
 
 #### OnConfiguring
 
@@ -237,3 +238,16 @@ Probamos desde el `endpoint` para crear un nuevo genero, el cual nos devuelve un
 Verificando desde nuestra Base de Datos.
 
 ![GeneroBD](/PeliculasWebAPI/images/NuevoGeneroBD.PNG)
+
+#### ToSqlQuery - Centralizando Queries Arbitrarios
+
+Podemos mapear un querie arbitrario a una clase específica. 
+
+Desde nuestro `ApplicationDBContext.cs` podemos definir un querie arbitrario. 
+
+![querieArbitrario](/PeliculasWebAPI/images/ToSqlQuery%20DbContext.png)
+
+Probando desde nuestro `endpoint` de Películas. 
+
+![resultadoQuerie](/PeliculasWebAPI/images/ToSqlQuery%20Resultado.PNG)
+

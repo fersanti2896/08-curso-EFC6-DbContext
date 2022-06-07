@@ -96,9 +96,26 @@ namespace PeliculasWebAPI {
                         .ToSqlQuery("SELECT Id, Nombre FROM Cines")
                         .ToView(null); /* Evita que se agruege la tabla con el esquema a la BD */
 
-            modelBuilder.Entity<PeliculaConteos>()
+            /* Retorna la vista de PeliculasConteos */
+            /* modelBuilder.Entity<PeliculaConteos>()
                         .HasNoKey()
-                        .ToView("PeliculasConteos");
+                        .ToView("PeliculasConteos"); */
+
+            /* Centralizando el querie arbitrario */
+            modelBuilder.Entity<PeliculaConteos>()
+                        .ToSqlQuery(@"SELECT Id, Titulo,
+                                    (SELECT COUNT(*) FROM GeneroPelicula
+                                     WHERE PeliculasId = Peliculas.Id)
+                                     AS CantidadGeneros,
+                                    (SELECT COUNT(DISTINCT CineId) FROM PeliculaSalaCine
+                                    INNER JOIN SalasCines
+                                    ON SalasCines.Id = PeliculaSalaCine.SalasCinesId
+                                    WHERE PeliculasId = Peliculas.Id)
+                                    AS CantidadCines,
+                                    (SELECT COUNT(*) FROM PeliculasActores
+                                    WHERE PeliculaId = Peliculas.Id)
+                                    AS CantidadActores
+                                    FROM Peliculas");
 
             /* Configuracion para una tipo de dato URL */
             foreach (var tipoEntidad in modelBuilder.Model.GetEntityTypes()) {
