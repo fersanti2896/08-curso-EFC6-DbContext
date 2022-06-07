@@ -31,6 +31,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(
                  );
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IEventosDbContextService, EventosDbContextService>();
 
 /* Agregando AutoMapper */
 builder.Services.AddAutoMapper(typeof(Program));

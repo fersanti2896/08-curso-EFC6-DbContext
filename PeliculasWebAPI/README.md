@@ -133,3 +133,38 @@ Al verificar en nuestra Base de Datos, vemos que tenemos el mismo resultado.
 
 #### Eventos Tracked y StateChanged
 
+_Tracked_. Se ejecuta cuando Entity Framework le empieza dar seguimiento a una entidad. 
+
+_StateChanged_. Se ejecuta cuando el status de la entidad que ya tiene seguimiento ha cambiado. 
+
+Para ello creamos nuestra interfaz `IEventosDbContextService.cs`.
+
+![InterfazEventos](/PeliculasWebAPI/images/IEventosDbContextService.png)
+
+También creamos nuestro servicio `EventosDbContextService.cs` que va heredar de nuestra interfaz que hemos creado. 
+
+![ServicioEventos](/PeliculasWebAPI/images/EventosDbContextService.png)
+
+Registramos tanto la interfaz como nuestro servicio en nuestro `Program.cs`.
+
+![registro](/PeliculasWebAPI/images/Registrando%20Interfaz%20y%20Servicio%20Tracked.png)
+
+Y en nuestro constructor de nuestro `ApplicationDBContext.cs` inyectamos nuestra dependencia de nuestro evento. 
+
+![inyeccionEvento](/PeliculasWebAPI/images/Constructor%20DbContext%20Tracked.png)
+
+Esta configuración no se disparan cuando no se usa el `AsNotTracking`, por ello siempre debe tener `Tracking`, en nuestro ejemplo de `Generos` que si lo tiene, al hacer la consulta de un genero nos devuelve el siguiente resultado: 
+
+![consultaGenero](/PeliculasWebAPI/images/Consulta%20generos%20GET.PNG)
+
+Vista en consola nos devuelve las configuraciones que hicimos en nuestro servicio `EventosDbContextsService.cs`.
+
+![consultaGeneroCmd](/PeliculasWebAPI/images/Consulta%20generos%20GET%202%20Consola.PNG)
+
+Al agregar un genero dispara el segundo método que habíamos configurado: 
+
+![insercionGenero](/PeliculasWebAPI/images/Insercion%20Genero%20Tracked.PNG)
+
+Vista en consola: 
+
+![insercionGeneroCmd](/PeliculasWebAPI/images/Insercion%20Genero%20Tracked%20Consola.PNG)

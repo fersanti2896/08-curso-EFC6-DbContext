@@ -9,11 +9,18 @@ using System.Reflection;
 namespace PeliculasWebAPI {
     public class ApplicationDBContext : DbContext {
         private readonly IUsuarioService usuarioService;
+        //private readonly IEventosDbContextService eventosDbContextService;
 
         /* Al usar DbContextOptions podemos usar la inyección de dependencias */
         public ApplicationDBContext(DbContextOptions options,
-            IUsuarioService usuarioService) : base(options) {
+            IUsuarioService usuarioService,
+            IEventosDbContextService eventosDbContextService) : base(options) {
             this.usuarioService = usuarioService;
+
+            if (eventosDbContextService is not null) {
+                ChangeTracker.Tracked += eventosDbContextService.ManejarTracked;
+                ChangeTracker.StateChanged += eventosDbContextService.ManejarStateChange;
+            }
         }
 
         public ApplicationDBContext() {
