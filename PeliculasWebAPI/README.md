@@ -168,3 +168,27 @@ Al agregar un genero dispara el segundo método que habíamos configurado:
 Vista en consola: 
 
 ![insercionGeneroCmd](/PeliculasWebAPI/images/Insercion%20Genero%20Tracked%20Consola.PNG)
+
+#### Eventos SaveChanges
+
+Tenemos otros métodos para guardar cambios:
+
+ - Uno se dispara antes de guardar los cambios.
+ - Otro que se dispara después de guardar los cambios.
+ - Otro que se dispara si durante el guardado de los cambios da un error. 
+
+Por lo cual, en nuestro `EventosDbContextService.cs` configuramos 3 métodos para los eventos mencionados, estos métodos están declarados también en nuestro `IEventosDbContextService.cs`.
+
+![metodosSaveChnages](/PeliculasWebAPI/images/SaveChanges%20Mas%20Metodos.png)
+
+Y en nuestro `ApplicationDBContext.cs` inyectamos estos métodos en nuestro constructor. 
+
+![SaveChangesConstructor](/PeliculasWebAPI/images/SaveChanges%20en%20DbContext.png)
+
+Al probar registrando 3 nuevos géneros, nos devuelve un status `200`. 
+
+![tresgeneros](/PeliculasWebAPI/images/SavedChanges%20Resultado.PNG)
+
+En nuestra consola nos devuelve lo que implementandos en nuestros métodos. 
+
+![SaveChangesCmd](/PeliculasWebAPI/images/SavedChanges.PNG)

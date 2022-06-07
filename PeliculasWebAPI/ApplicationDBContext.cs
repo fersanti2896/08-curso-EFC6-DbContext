@@ -18,8 +18,11 @@ namespace PeliculasWebAPI {
             this.usuarioService = usuarioService;
 
             if (eventosDbContextService is not null) {
-                ChangeTracker.Tracked += eventosDbContextService.ManejarTracked;
-                ChangeTracker.StateChanged += eventosDbContextService.ManejarStateChange;
+                //ChangeTracker.Tracked      += eventosDbContextService.ManejarTracked;
+                //ChangeTracker.StateChanged += eventosDbContextService.ManejarStateChange;
+                SavingChanges              += eventosDbContextService.ManejarSavingChanges;
+                SavedChanges               += eventosDbContextService.ManejarSavedChanges;
+                SaveChangesFailed          += eventosDbContextService.ManejarSavedChangesFailed;
             }
         }
 
