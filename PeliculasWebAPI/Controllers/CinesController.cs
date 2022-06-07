@@ -87,12 +87,20 @@ namespace PeliculasWebAPI.Controllers {
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Get(int id) { 
-            var cine = await context.Cines
+            /*var cine = await context.Cines
                                     .AsTracking()
                                     .Include(c => c.SalaCine)
                                     .Include(c => c.CineOferta)
                                     .Include(c => c.CineDetalle)
-                                    .FirstOrDefaultAsync(c => c.Id == id);
+                                    .FirstOrDefaultAsync(c => c.Id == id); */
+
+            /* Querie Arbitrario */
+            var cine = await context.Cines
+                                    .FromSqlInterpolated($"SELECT * FROM Cines WHERE Id = {id}")
+                                    .Include(c => c.SalaCine)
+                                    .Include(c => c.CineOferta)
+                                    .Include(c => c.CineDetalle)
+                                    .FirstOrDefaultAsync();
 
             if (cine is null)
                 return NotFound();

@@ -29,9 +29,21 @@ namespace PeliculasWebAPI.Controllers {
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Genero>> PorId(int id) {
-            var genero = await context.Generos
+            /**var genero = await context.Generos
                                       .AsTracking()
-                                      .FirstOrDefaultAsync(p => p.Identificador == id);
+                                      .FirstOrDefaultAsync(p => p.Identificador == id); **/
+
+            /* Querie Arbitrario Forma 1 */
+            /**var genero = await context.Generos
+                                      .FromSqlRaw("SELECT * FROM Generos WHERE Identificador = {0}", id)
+                                      .IgnoreQueryFilters()
+                                      .FirstOrDefaultAsync(); **/
+
+            /* Querie Arbitrario Forma 2 */
+            var genero = await context.Generos
+                                      .FromSqlInterpolated($"SELECT * FROM Generos WHERE Identificador = {id}")
+                                      .IgnoreQueryFilters()
+                                      .FirstOrDefaultAsync();
 
             if (genero is null) {
                 return NotFound();

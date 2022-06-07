@@ -17,6 +17,8 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 4. __Sobreescribiendo SaveChanges.__
 5. __Inyección de Dependencias en DbContext.__
 6. __Eventos Tracked y StateChanged.__
+7. __Eventos SaveChanges.__
+8. __Queries Arbitrarios.__
 
 #### OnConfiguring
 
@@ -192,3 +194,35 @@ Al probar registrando 3 nuevos géneros, nos devuelve un status `200`.
 En nuestra consola nos devuelve lo que implementandos en nuestros métodos. 
 
 ![SaveChangesCmd](/PeliculasWebAPI/images/SavedChanges.PNG)
+
+#### Queries Arbitrarios
+
+Cuando no podemos hacer consultas que queremos, podemos definir queries arbitrarios en Entity Framework. 
+
+Por ejemplo en `GenerosController.cs` podemos implementar un querie arbitrario ya sea con interporlación o no. 
+
+![QuerieArbiGeneros](/PeliculasWebAPI/images/QuerieArbitrarioGenerosController.png)
+
+Como resultado tenemos un status `200` 
+
+![QuerieResult](/PeliculasWebAPI/images/QuerieArbitrarioResultado.PNG)
+
+Si lo vemos desde la consola, vemos que se implementó la sentencia SQL. 
+
+![QuerieResultCmd](/PeliculasWebAPI/images/QuerieArbitrarioResultado%20Consola.PNG)
+
+En `CinesController.cs` de igual forma aplicamos un querie arbitrario a una endpoint. 
+
+![QuerieArbiCines](/PeliculasWebAPI/images/QuerieArbitrarioCinesController.png)
+
+Como resutado obtenemos un status `200` de la consulta.
+
+![QuerieResult2](/PeliculasWebAPI/images/QuerieArbitrarioResultado%202.PNG)
+
+Si lo vemos desde la consola, notamos la implementación de SQL. 
+
+![QueriResultCmd2](/PeliculasWebAPI/images/QuerieArbitrarioResultado%20Consola%202.PNG)
+
+
+
+
