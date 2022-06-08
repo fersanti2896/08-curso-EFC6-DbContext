@@ -22,6 +22,8 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 9. __Sentencias Arbitrarias.__
 10. __ToSqlQuery - Centralizando Queries Arbitrarios.__
 11. __Procedimientos Almacenados.__
+12. __Introducción a Transacciones.__
+13. __BeginTransaction - Una transacción para varios SaveChanges.__
 
 #### OnConfiguring
 
@@ -281,3 +283,22 @@ Probando el `endpoint` nos devuelve un status `200`:
 Visto en nuestra Base de Datos, notamos que se registró el Género con éxito. 
 
 ![GenerosBDProcAlm](/PeliculasWebAPI/images/generos%20BD%20Proc%20Alm.PNG)
+
+#### Introducción a Transacciones
+
+Las transacciones se usan para que todas las tareas se ejecuten existosamente, de lo contrario ninguna se ejecutará aunque alguna tarea sea existosa. 
+
+En nuestro caso `Cine.cs` y `SalaCine.cs` si quieremos insertar un Cine con su Sala de Cine, debemos hacer dos operaciones, es decir, la de registrar el cine y sus salas de cines.
+
+En nuestro `GenerosController.cs` ya tenemos un `endpoint` que usa una transacción con el método `SaveChangesAsync()`.
+
+![variosGenerosTrans](/PeliculasWebAPI/images/VariosGenerosTransc.png)
+
+Lo que nos indica que si agregramos una colección de Generos y mientras uno sea incorrecto, los demás aunque sea existosos, no se ejecutará correctamente la petición y por lo tanto tampoco se replicará en la Base de Datos. 
+
+Por lo que en el `endpoint` nos devuelve un error `500`.
+
+![GenerosTransc](/PeliculasWebAPI/images/GenerosTransc.PNG)
+
+#### BeginTransaction - Una transacción para varios SaveChanges
+
