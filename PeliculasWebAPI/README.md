@@ -302,3 +302,50 @@ Por lo que en el `endpoint` nos devuelve un error `500`.
 
 #### BeginTransaction - Una transacción para varios SaveChanges
 
+En ocasiones cuando se ejecuta una transacción y la primera es existosa, pero la segunda no, se debe revertir todo el proceso, para ello se usa el `BeginTransaction`.
+
+Con `BeginTransaction` se puede cubrir varios `SaveChanges()`.
+
+Si queremos tener dos entidades que no queremos que se relaciones, podemos usar `BeginTransaction`, por lo cual creamos dos entidades `Factura.cs` y `FacturaDetalle.cs`
+
+`Factura.cs`
+
+![factura](/PeliculasWebAPI/images/Factura.png)
+
+`FacturaDetalle.cs`
+
+![facturaDetalle](/PeliculasWebAPI/images/FacturaDetalle.png)
+
+Al hacer la relación normal entre las dos entidades en `FacturaConfig.cs`.
+
+![facturaConfig](/PeliculasWebAPI/images/FacturaConfig.png)
+
+Posteriormente hacemos la migración y empujamos los cambios hacia la Base de Datos. 
+
+![facturaMigracion](/PeliculasWebAPI/images/FacturaMigracion.png)
+
+Creamos nuestro `FacturaController.cs` y un `endpoint` que creará una factura. 
+
+![facturapost](/PeliculasWebAPI/images/PostFactura.png)
+
+En primera instancia sino se tiene la línea 
+
+    /* Simula Error */
+    throw new ApplicationException("Esto es una prueba");
+
+Y al hacer la petición `POST` nos devuelve un status `200` donde se registraron tanto la factura como su detalle. 
+
+![facturaResult](/PeliculasWebAPI/images/FacturaResult.PNG)
+
+En nuestra Base de Datos persisten los registros que creamos. 
+
+![facturasDB](/PeliculasWebAPI/images/Select%20Facturas.PNG)
+
+Pero simulamos el error incluyendo el código en nuestro método `POST`.
+
+    /* Simula Error */
+    throw new ApplicationException("Esto es una prueba");
+
+Al hacer la posteo de los registros, nos devuelve un status `400` donde revierte los cambios realizados, es decir, no se ejecuta ninguna acción. 
+
+![facturaResultError](/PeliculasWebAPI/images/FacturaResult%20Error.PNG)
