@@ -1,5 +1,7 @@
-﻿namespace PeliculasWebAPI.Entidades {
-    public class SalaCine {
+﻿using PeliculasWebAPI.Servicios;
+
+namespace PeliculasWebAPI.Entidades {
+    public class SalaCine : IId {
         public int Id { get; set; }
         public TipoSalaCine TipoSalaCine { get; set; }
         public decimal Precio { get; set; }

@@ -18,7 +18,7 @@ namespace PeliculasWebAPI.Entidades.Configuraciones {
             builder.HasMany(c => c.SalaCine)
                    .WithOne(s => s.Cine)
                    .HasForeignKey(s => s.CineId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             /* Indicamos que Cine y CineDetalle apunta a la misma tabla */
             builder.HasOne(c => c.CineDetalle)
@@ -30,6 +30,8 @@ namespace PeliculasWebAPI.Entidades.Configuraciones {
                 dir.Property(d => d.Provincia).HasColumnName("Provincia");
                 dir.Property(d => d.Pais).HasColumnName("Pais");
             });
+
+            builder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangedNotifications);
         }
     }
 }

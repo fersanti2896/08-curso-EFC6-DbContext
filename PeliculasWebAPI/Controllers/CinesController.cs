@@ -7,6 +7,8 @@ using NetTopologySuite.Geometries;
 using PeliculasWebAPI.DTOs;
 using PeliculasWebAPI.Entidades;
 using PeliculasWebAPI.Entidades.SinLlaves;
+using PeliculasWebAPI.Servicios;
+using System.Collections.ObjectModel;
 
 namespace PeliculasWebAPI.Controllers {
     [ApiController]
@@ -14,10 +16,14 @@ namespace PeliculasWebAPI.Controllers {
     public class CinesController : ControllerBase {
         private readonly ApplicationDBContext context;
         private readonly IMapper mapper;
+        private readonly IActualizadorObservableCollectionService actualizadorObservableCollectionService;
 
-        public CinesController(ApplicationDBContext context, IMapper mapper) {
+        public CinesController(ApplicationDBContext context, 
+            IMapper mapper,
+            IActualizadorObservableCollectionService actualizadorObservableCollectionService) {
             this.context = context;
             this.mapper = mapper;
+            this.actualizadorObservableCollectionService = actualizadorObservableCollectionService;
         }
 
         public object NtsGeometryService { get; private set; }
@@ -65,7 +71,7 @@ namespace PeliculasWebAPI.Controllers {
                     FechaInicio = DateTime.Today,
                     FechaFin = DateTime.Today.AddDays(7)
                 },
-                SalaCine = new HashSet<SalaCine>() {
+                SalaCine = new ObservableCollection<SalaCine>() {
                     new SalaCine() {
                         Precio       = 200,
                         Moneda       = Moneda.PesoMex,
@@ -124,6 +130,24 @@ namespace PeliculasWebAPI.Controllers {
             /* Propiedad set permite crear un DbContext en tiempo real */
             // return await context.Set<CineSinUbicacion>().ToListAsync();
             return await context.CineSinUbicacion.ToListAsync();
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(CineCreacionDTO cineCreacionDTO, int id) {
+            var cineDB = await context.Cines.AsTracking()
+                                                   .Include(c => c.SalaCine)
+                                                   .Include(c => c.CineOferta)
+                                                   .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (cineDB is null) {
+                return NotFound();
+            }
+
+            cineDB = mapper.Map(cineCreacionDTO, cineDB);
+            actualizadorObservableCollectionService.Actualizar(cineDB.SalaCine, cineCreacionDTO.SalasCines);
+
+            await context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPut("cineOferta")]

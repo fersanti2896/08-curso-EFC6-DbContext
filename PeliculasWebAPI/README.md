@@ -24,6 +24,7 @@ El DbContext es una parte principal de Entity Framework, el cual tienen algunas 
 11. __Procedimientos Almacenados.__
 12. __Introducción a Transacciones.__
 13. __BeginTransaction - Una transacción para varios SaveChanges.__
+14. __Detección de Cambios Personalizada.__
 
 #### OnConfiguring
 
@@ -349,3 +350,44 @@ Pero simulamos el error incluyendo el código en nuestro método `POST`.
 Al hacer la posteo de los registros, nos devuelve un status `400` donde revierte los cambios realizados, es decir, no se ejecuta ninguna acción. 
 
 ![facturaResultError](/PeliculasWebAPI/images/FacturaResult%20Error.PNG)
+
+#### Detección de Cambios Personalizada
+
+Entity Framework realiza el seguimiento de Entidades a través de sus detecciones de cambios. 
+
+Por ejemplo, queremos tener un `endpoint` que actualice un cine con todas sus relaciones, como su cine oferta y su sala de cines. 
+
+Para ello creamos una nueva entidad llamada `Notificacion.cs`. 
+
+![notificacion](/PeliculasWebAPI/images/Notificacion.png)
+
+Hacemos la herencia hacia la entidad de `Cine.cs`.
+
+![cineNotificacion](/PeliculasWebAPI/images/CineNotificacion.png)
+
+Agregamos en nuestro `CineConfig.cs` la línea que hará el seguimiento de notificación. 
+
+    builder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangedNotifications);
+
+Y creamos dos interfaces y nuestro servicio, el cual hará los cambios de manera personalizada. 
+
+La interface `IId.cs`.
+
+![inertafceId](/PeliculasWebAPI/images/InterfaceId.png)
+
+La interace `IActualizadorObservableCollectionService.cs`.
+
+![interfaceActua](/PeliculasWebAPI/images/InterfaceActualizador.png)
+
+Y nuestro servicio `ActualizadorObservableCollectionService.cs`.
+
+![servcioAct](/PeliculasWebAPI/images/ActualizadorService.png)
+
+En nuestro `CinesController.cs` creamos nuestro `endpoint` de tipo `PUT`.
+
+![cinePut](/PeliculasWebAPI/images/CineNotificacionController.png)
+
+Finalmente al probar nuestro `endpoint` nos devuelve el status `200`.
+
+![deteccionCambios](/PeliculasWebAPI/images/DetencionDeCambios%20Result.PNG)
+

@@ -56,7 +56,11 @@ namespace PeliculasWebAPI.Controllers {
 
             /* Automapper nos permite mapear de un objeto a otro */
             actorDB = mapper.Map(actorCreacionDTO, actorDB);
-            await context.SaveChangesAsync();
+
+            /* Observa los valores del DbContext respecto a la entidad */
+            var entry = context.Entry(actorDB);
+
+            //await context.SaveChangesAsync();
 
             return Ok();
         }

@@ -54,7 +54,9 @@ namespace PeliculasWebAPI.Servicios {
                               );*/
 
             var geoFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            
             CreateMap<CineCreacionDTO, Cine>()
+                     .ForMember(ent => ent.SalaCine, opc => opc.Ignore())
                      .ForMember(ent => ent.Ubicacion,
                                 dto => dto.MapFrom(
                                                 campo => geoFactory.CreatePoint(
